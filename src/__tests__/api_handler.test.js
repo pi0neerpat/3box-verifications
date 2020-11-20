@@ -60,6 +60,7 @@ describe('apiHandler', () => {
   test('github_verify', done => {
     apiHandler.github_verify({}, {}, (err, res) => {
       expect(err).toBeNull()
+      console.log(res);
       expect(res).not.toBeNull()
       done()
     })
