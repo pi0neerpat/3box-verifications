@@ -19,8 +19,9 @@ describe('TwitterMgr', () => {
   test('setSecrets', () => {
     expect(sut.isSecretsSet()).toEqual(false)
     sut.setSecrets({
-      GITHUB_USERNAME: 'pi0neerpat',
-      GITHUB_PERSONAL_ACCESS_TOKEN: 'da6988ec64d62d2e4642b519c606448124b3c0db'
+      GITHUB_USERNAME: 'pi0neerpat'
+      // Uncomment to test your real token
+      // GITHUB_PERSONAL_ACCESS_TOKEN: 'FAKE'
     })
     expect(sut.isSecretsSet()).toEqual(true)
   })

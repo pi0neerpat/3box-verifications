@@ -71,12 +71,12 @@ if (process.env.AWS_BUCKET_NAME)
   envConfig['AWS_BUCKET_NAME'] = process.env.AWS_BUCKET_NAME
 
 const preHandler = (handler, event, context, callback) => {
-  // TODO: set github manager secret
   if (
     !twitterMgr.isSecretsSet() ||
     !claimMgr.isSecretsSet() ||
     !emailMgr.isSecretsSet() ||
-    !analytics.isSecretsSet()
+    !analytics.isSecretsSet() ||
+    !githubMgr.isSecretsSet()
   ) {
     const kms = new AWS.KMS()
     kms
@@ -86,6 +86,7 @@ const preHandler = (handler, event, context, callback) => {
         const decrypted = String(data.Plaintext)
         const config = Object.assign(JSON.parse(decrypted), envConfig)
         twitterMgr.setSecrets(config)
+        githubMgr.setSecrets(config)
         emailMgr.setSecrets(config)
         analytics.setSecrets(config)
         return claimMgr.setSecrets(config)

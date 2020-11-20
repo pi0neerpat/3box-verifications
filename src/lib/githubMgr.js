@@ -15,11 +15,13 @@ class GithubMgr {
   setSecrets(secrets) {
     this.username = secrets.GITHUB_USERNAME
     this.personal_access_token = secrets.GITHUB_PERSONAL_ACCESS_TOKEN
-    this.client = request.defaults({
-      headers: {
-        authorization: `token ${secrets.GITHUB_PERSONAL_ACCESS_TOKEN}`
-      }
-    })
+    this.client = request
+    if (secrets.GITHUB_PERSONAL_ACCESS_TOKEN)
+      this.client = request.defaults({
+        headers: {
+          authorization: `token ${secrets.GITHUB_PERSONAL_ACCESS_TOKEN}`
+        }
+      })
   }
 
   async findDidInGists(handle, did) {

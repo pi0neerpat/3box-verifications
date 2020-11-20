@@ -17,7 +17,9 @@ describe('apiHandler', () => {
       TWITTER_CONSUMER_KEY: 'FAKE',
       TWITTER_CONSUMER_SECRET: 'FAKE',
       KEYPAIR_PRIVATE_KEY: '4baba8f4a',
-      KEYPAIR_PUBLIC_KEY: '04fff936f805ee2'
+      KEYPAIR_PUBLIC_KEY: '04fff936f805ee2',
+      GITHUB_USERNAME: 'TEST',
+      GITHUB_PERSONAL_ACCESS_TOKEN: 'FAKE'
     }
     MockAWS.mock(
       'KMS',
@@ -40,7 +42,6 @@ describe('apiHandler', () => {
   test('github', done => {
     apiHandler.github({}, {}, (err, res) => {
       expect(err).toBeNull()
-      console.log(res)
       expect(res).not.toBeNull()
       done()
     })
