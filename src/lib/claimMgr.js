@@ -1,5 +1,5 @@
-const didJWT = require('did-jwt')
 import { initIPFS } from "ipfs-s3-dag-get"
+const didJWT = require('did-jwt')
 const { Resolver } = require('did-resolver')
 const get3IdResolver = require('3id-resolver').getResolver
 const getMuportResolver = require("muport-did-resolver").getResolver
