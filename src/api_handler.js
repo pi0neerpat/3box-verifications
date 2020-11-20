@@ -105,7 +105,7 @@ module.exports.twitter = (event, context, callback) => {
 
 let githubHandler = new GithubHandler(githubMgr, claimMgr, analytics)
 module.exports.github = (event, context, callback) => {
-  preHandler(githubVerifyHandler, event, context, callback)
+  preHandler(githubHandler, event, context, callback)
 }
 
 let emailSendHandler = new EmailSendHandler(emailMgr, analytics)
