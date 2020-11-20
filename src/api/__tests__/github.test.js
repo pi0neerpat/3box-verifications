@@ -1,19 +1,13 @@
-const TwitterHandler = require('../twitter')
+const GithubHandler = require('../github')
 
 describe('TwitterHandler', () => {
   let sut
-  let twitterMgrMock = {
-    findDidInTweets: jest.fn()
-  }
-  let claimMgrMock = {
-    issueTwitter: jest.fn()
-  }
-  let analyticsMock = {
-      trackVerifyTwitter: jest.fn()
-  }
+  let githubMgrMock = { findDidInGists: jest.fn() }
+  let claimMgrMock = { issueGithub: jest.fn() }
+  let analyticsMock = { trackVerifyGithub: jest.fn() }
 
   beforeAll(() => {
-    sut = new TwitterHandler(twitterMgrMock, claimMgrMock, analyticsMock)
+    sut = new GithubHandler(githubMgrMock, claimMgrMock, analyticsMock)
   })
 
   test('empty constructor', () => {
@@ -40,7 +34,10 @@ describe('TwitterHandler', () => {
 
   test('no did', done => {
     sut.handle(
-      { headers: { origin: 'https://subdomain.3box.io' }, body: JSON.stringify({ other: 'other' }) },
+      {
+        headers: { origin: 'https://subdomain.3box.io' },
+        body: JSON.stringify({ other: 'other' })
+      },
       {},
       (err, res) => {
         expect(err).not.toBeNull()
@@ -51,28 +48,28 @@ describe('TwitterHandler', () => {
     )
   })
 
-  test('no twitter handle', done => {
+  test('no github handle', done => {
     sut.handle(
       {
         headers: { origin: 'https://3box.io' },
-        body: JSON.stringify({ did: 'did:https:test' }) },
+        body: JSON.stringify({ did: 'did:https:test' })
+      },
       {},
       (err, res) => {
         expect(err).not.toBeNull()
         expect(err.code).toEqual(400)
-        expect(err.message).toEqual('no twitter handle')
+        expect(err.message).toEqual('no github handle')
         done()
       }
     )
   })
 
   test('no verification url', done => {
-    twitterMgrMock.findDidInTweets.mockReturnValue('')
-
+    githubMgrMock.findDidInGists.mockReturnValue('')
     sut.handle(
       {
         headers: { origin: 'https://3box.io' },
-        body: JSON.stringify({ did: 'did:https:test', twitter_handle: 'test' })
+        body: JSON.stringify({ did: 'did:https:test', github_handle: 'test' })
       },
       {},
       (err, res) => {
@@ -85,13 +82,13 @@ describe('TwitterHandler', () => {
   })
 
   test('happy path', done => {
-    twitterMgrMock.findDidInTweets.mockReturnValue('http://some.valid.url')
-    claimMgrMock.issueTwitter.mockReturnValue('somejwttoken')
+    githubMgrMock.findDidInGists.mockReturnValue('http://some.valid.url')
+    claimMgrMock.issueGithub.mockReturnValue('somejwttoken')
 
     sut.handle(
       {
         headers: { origin: 'https://subdomain.3box.io' },
-        body: JSON.stringify({ did: 'did:https:test', twitter_handle: 'test' })
+        body: JSON.stringify({ did: 'did:https:test', github_handle: 'test' })
       },
       {},
       (err, res) => {

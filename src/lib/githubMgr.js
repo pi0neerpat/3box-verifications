@@ -33,18 +33,18 @@ class GithubMgr {
       username: handle,
       since: thirtyMinutesAgo.toISOString()
     })
-    let status = ''
+    let gistUrl = ''
     const gists = result.data
-    if (!gists.length) return status
+    if (!gists.length) return gistUrl
 
     const fileName = Object.keys(gists[0].files)[0]
     const rawUrl = gists[0].files[fileName].raw_url
     const res = await fetch(rawUrl)
     const text = await res.text()
-    if (text.includes(did)) status = rawUrl
+    if (text.includes(did)) gistUrl = rawUrl
 
     // Return the raw URL of the gist containing the did
-    return status
+    return gistUrl
   }
 }
 

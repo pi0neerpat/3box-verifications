@@ -33,14 +33,14 @@ class GithubHandler {
     }
     if (!body.github_handle) {
       cb({ code: 400, message: 'no github handle' })
-      // this.analytics.trackVerifyGithub(body.did, 400)
+      this.analytics.trackVerifyGithub(body.did, 400)
       return
     }
 
     let verification_url = ''
     try {
-      verification_url = await this.twitterMgr.findDidInTweets(
-        body.twitter_handle,
+      verification_url = await this.githubMgr.findDidInGists(
+        body.github_handle,
         body.did
       )
     } catch (e) {
@@ -57,9 +57,9 @@ class GithubHandler {
 
     let verification_claim = ''
     try {
-      verification_claim = await this.claimMgr.issueTwitter(
+      verification_claim = await this.claimMgr.issueGithub(
         body.did,
-        body.twitter_handle,
+        body.github_handle,
         verification_url
       )
     } catch (e) {
