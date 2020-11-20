@@ -4,16 +4,19 @@ const AWS = require('aws-sdk')
 const TwitterHandler = require('./api/twitter')
 const EmailSendHandler = require('./api/email_send')
 const EmailVerifyHandler = require('./api/email_verify')
+const GithubVerifyHandler = require('./api/github_verify')
 const DidDocumentHandler = require('./api/diddoc')
 
 const TwitterMgr = require('./lib/twitterMgr')
 const EmailMgr = require('./lib/emailMgr')
+const GithubMgr = require('./lib/githubMgr')
 const ClaimMgr = require('./lib/claimMgr')
 const Analytics = require('./lib/analytics')
 
 let twitterMgr = new TwitterMgr()
 let claimMgr = new ClaimMgr()
 let emailMgr = new EmailMgr()
+let githubMgr = new GithubMgr()
 const analytics = new Analytics()
 
 const doHandler = (handler, event, context, callback) => {
@@ -67,6 +70,7 @@ if (process.env.IPFS_PATH) envConfig['IPFS_PATH'] = process.env.IPFS_PATH
 if (process.env.AWS_BUCKET_NAME) envConfig['AWS_BUCKET_NAME'] = process.env.AWS_BUCKET_NAME
 
 const preHandler = (handler, event, context, callback) => {
+  // TODO: set github manager secret
   if (!twitterMgr.isSecretsSet() || !claimMgr.isSecretsSet() || !emailMgr.isSecretsSet() || !analytics.isSecretsSet()) {
     const kms = new AWS.KMS()
     kms
@@ -100,6 +104,11 @@ module.exports.email_send = (event, context, callback) => {
 let emailVerifyHandler = new EmailVerifyHandler(emailMgr, claimMgr, analytics)
 module.exports.email_verify = (event, context, callback) => {
   preHandler(emailVerifyHandler, event, context, callback)
+}
+
+let githubVerifyHandler = new GithubVerifyHandler(githubMgr, claimMgr, analytics)
+module.exports.github_verify = (event, context, callback) => {
+  preHandler(githubVerifyHandler, event, context, callback)
 }
 
 let didDocumentHandler = new DidDocumentHandler(claimMgr)
