@@ -26,7 +26,6 @@ describe('apiHandler', () => {
   })
 
   test('twitter', done => {
-    apiHandler.twitter({}, {}, (err, res) => {
       expect(err).toBeNull()
       expect(res).not.toBeNull()
       done()
