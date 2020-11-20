@@ -1,4 +1,5 @@
 import { request } from '@octokit/request'
+const fetch = require('node-fetch')
 
 class GithubMgr {
   constructor() {
@@ -28,32 +29,22 @@ class GithubMgr {
     const thirtyMinutesAgo = new Date(
       new Date().setMinutes(new Date().getMinutes() - 30)
     )
-
-    return this.client('GET /users/:username/gists', {
+    const result = await this.client('GET /users/:username/gists', {
       username: handle,
-      since: thirtyMinutesAgo
-    }).then(result => {
-      let status = ''
-      const gists = result.data
-      if (!gists.length) return status
-      console.log(gists)
-
-      // Return the URL of the gist with the did
+      since: thirtyMinutesAgo.toISOString()
     })
+    let status = ''
+    const gists = result.data
+    if (!gists.length) return status
 
-    console.log(gists)
-    //     // No gists
-    //     if (!gists || !gists.length) satus = "none";
-    //     // No challenge-code
-    //     gists.forEach(gist => {
-    //       if (gist.full_text.includes(did)) {
-    //         status = "https://twitter.com/" + handle + "/status/";
-    //         status = status + tweet.id_str;
-    //       }
-    //     });
-    //     // No DID
-    //     return status;
-    //   });
+    const fileName = Object.keys(gists[0].files)[0]
+    const rawUrl = gists[0].files[fileName].raw_url
+    const res = await fetch(rawUrl)
+    const text = await res.text()
+    if (text.includes(did)) status = rawUrl
+
+    // Return the raw URL of the gist containing the did
+    return status
   }
 }
 

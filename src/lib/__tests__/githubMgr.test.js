@@ -4,7 +4,8 @@ describe('TwitterMgr', () => {
   let sut
   let fakeDid = 'did:3:Qmasdfasdf'
   let handle = 'pi0neerpat'
-  let gistUrl = 'https://twitter.com/oedtest/status/1078648593987395584'
+  let gistUrl =
+    'https://gist.githubusercontent.com/pi0neerpat/3fa6abf46b077376425e1a4baf9ef63f/raw/562aa87d3e8a166240f18f9522c3a05850535634/gistfile1.txt'
 
   beforeAll(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
@@ -59,7 +60,13 @@ describe('TwitterMgr', () => {
     sut.client = jest.fn(() => {
       return Promise.resolve({
         data: [
-          { full_text: 'my did is ' + fakeDid, id_str: '1078648593987395584' }
+          {
+            files: {
+              'textGist1.txt': {
+                raw_url: gistUrl
+              }
+            }
+          }
         ]
       })
     })
@@ -67,7 +74,6 @@ describe('TwitterMgr', () => {
     sut
       .findDidInGists(handle, fakeDid)
       .then(resp => {
-        console.log(resp)
         expect(resp).toEqual(gistUrl)
         done()
       })
