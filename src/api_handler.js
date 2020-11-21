@@ -78,22 +78,34 @@ const preHandler = (handler, event, context, callback) => {
     !analytics.isSecretsSet() ||
     !githubMgr.isSecretsSet()
   ) {
-    const kms = new AWS.KMS()
-    kms
-      .decrypt({ CiphertextBlob: Buffer.from(process.env.SECRETS, 'base64') })
-      .promise()
-      .then(data => {
-        const decrypted = String(data.Plaintext)
-        const config = Object.assign(JSON.parse(decrypted), envConfig)
-        twitterMgr.setSecrets(config)
-        githubMgr.setSecrets(config)
-        emailMgr.setSecrets(config)
-        analytics.setSecrets(config)
-        return claimMgr.setSecrets(config)
-      })
-      .then(res => {
-        doHandler(handler, event, context, callback)
-      })
+    // TODO: Uncomment for 3Box team deployment
+    // const kms = new AWS.KMS()
+    // kms
+    //   .decrypt({ CiphertextBlob: Buffer.from(process.env.SECRETS, 'base64') })
+    //   .promise()
+    //   .then(data => {
+    //     const decrypted = String(data.Plaintext)
+    //     const config = Object.assign(JSON.parse(decrypted), envConfig)
+    //     twitterMgr.setSecrets(config)
+    //     githubMgr.setSecrets(config)
+    //     emailMgr.setSecrets(config)
+    //     analytics.setSecrets(config)
+    //     return claimMgr.setSecrets(config)
+    //   })
+    //   .then(res => {
+    //     doHandler(handler, event, context, callback)
+    //   })
+    const secretsFromEnv = {
+      GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+      GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+    }
+    const config = { ...secretsFromEnv, ...envConfig }
+    twitterMgr.setSecrets(config)
+    githubMgr.setSecrets(config)
+    emailMgr.setSecrets(config)
+    analytics.setSecrets(config)
+    claimMgr.setSecrets(config)
+    doHandler(handler, event, context, callback)
   } else {
     doHandler(handler, event, context, callback)
   }
