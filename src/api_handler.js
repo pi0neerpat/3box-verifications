@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
-const AWS = require('aws-sdk')
+// const AWS = require('aws-sdk')
 
 const TwitterHandler = require('./api/twitter')
 const GithubHandler = require('./api/github')
