@@ -100,3 +100,12 @@ functions:
           method: get
           cors: true
           path: .well-known/did.json
+
+  # request-github:
+  #   handler: src/api_handler.request_github
+  #   timeout: 30
+  #   events:
+  #     - http:
+  #         method: post
+  #         cors: true
+  #         path: request-github
