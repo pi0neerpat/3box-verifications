@@ -72,10 +72,10 @@ if (process.env.AWS_BUCKET_NAME)
 
 const preHandler = (handler, event, context, callback) => {
   if (
-    !twitterMgr.isSecretsSet() ||
+    // !twitterMgr.isSecretsSet() ||
     !claimMgr.isSecretsSet() ||
-    !emailMgr.isSecretsSet() ||
-    !analytics.isSecretsSet() ||
+    // !emailMgr.isSecretsSet() ||
+    // !analytics.isSecretsSet() ||
     !githubMgr.isSecretsSet()
   ) {
     // TODO: Uncomment for 3Box team deployment
@@ -97,13 +97,12 @@ const preHandler = (handler, event, context, callback) => {
     //   })
     const secretsFromEnv = {
       GITHUB_USERNAME: process.env.GITHUB_USERNAME,
-      GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_PERSONAL_ACCESS_TOKEN
+      GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
+      KEYPAIR_PRIVATE_KEY: process.env.KEYPAIR_PRIVATE_KEY,
+      KEYPAIR_PUBLIC_KEY: process.env.KEYPAIR_PUBLIC_KEY
     }
     const config = { ...secretsFromEnv, ...envConfig }
-    twitterMgr.setSecrets(config)
     githubMgr.setSecrets(config)
-    emailMgr.setSecrets(config)
-    analytics.setSecrets(config)
     claimMgr.setSecrets(config)
     doHandler(handler, event, context, callback)
   } else {
