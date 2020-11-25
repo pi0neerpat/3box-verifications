@@ -2,7 +2,6 @@
 import KeyResolver from '@ceramicnetwork/key-did-resolver'
 
 import { initIPFS } from 'ipfs-s3-dag-get'
-import { DID } from 'dids'
 const didJWT = require('did-jwt')
 
 class ClaimMgr {
