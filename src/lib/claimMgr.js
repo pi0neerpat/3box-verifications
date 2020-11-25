@@ -1,8 +1,8 @@
 import { initIPFS } from 'ipfs-s3-dag-get'
 const didJWT = require('did-jwt')
 const { Resolver } = require('did-resolver')
-const get3IdResolver = require('3id-resolver').getResolver
-import keyResolver from '@ceramicnetwork/key-did-resolver'
+import { default as get3IdResolver } from '@ceramicnetwork/3id-did-resolver'
+import { default as getKeyResolver } from '@ceramicnetwork/key-did-resolver'
 
 class ClaimMgr {
   constructor() {
@@ -26,8 +26,8 @@ class ClaimMgr {
     const shardBlockstore = true
     this.ipfs = await initIPFS({ ipfsPath, bucket, shardBlockstore })
     this.resolver = new Resolver({
-      ...get3IdResolver(this.ipfs)
-      // ...keyResolver.getResolver()
+      ...get3IdResolver(this.ipfs),
+      ...getKeyResolver()
     })
   }
 

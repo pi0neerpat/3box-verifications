@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/3box/3box-verifications#readme",
   "dependencies": {
-    "3id-resolver": "^1.0.1",
     "@ceramicnetwork/3id-did-resolver": "^0.4.11",
     "@ceramicnetwork/key-did-resolver": "^0.2.0",
     "@octokit/request": "^5.4.10",
