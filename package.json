@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint ./src ",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --setupFiles dotenv/config",
     "coverage": "jest --coverage"
   },
   "repository": {

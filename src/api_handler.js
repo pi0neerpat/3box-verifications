@@ -70,8 +70,6 @@ const preHandler = (handler, event, context, callback) => {
   if (
     // !twitterMgr.isSecretsSet() ||
     !claimMgr.isSecretsSet() ||
-    // !emailMgr.isSecretsSet() ||
-    // !analytics.isSecretsSet() ||
     !githubMgr.isSecretsSet()
   ) {
     // TODO: Uncomment for 3Box team deployment
@@ -110,13 +108,13 @@ module.exports.diddoc = (event, context, callback) => {
   preHandler(didDocumentHandler, event, context, callback)
 }
 
-let githubHandler = new GithubHandler(githubMgr, claimMgr, analytics)
-module.exports.request_github = (event, context, callback) => {
-  preHandler(githubHandler, event, context, callback)
-}
+// module.exports.confirm_github = (event, context, callback) => {
+//   console.log('Not implemented yet');
+// }
 
+let githubHandler = new GithubHandler(githubMgr, claimMgr, analytics)
 module.exports.confirm_github = (event, context, callback) => {
-  console.log('Not implemented yet');
+  preHandler(githubHandler, event, context, callback)
 }
 
 let twitterHandler = new TwitterHandler(twitterMgr, claimMgr, analytics)
